@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Калькулятор на Python (Brython)</title>
+
+  <!-- Подключаем Brython -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.1/brython.min.js"></script>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    .calculator {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+    }
+
+    input {
+      width: 260px;
+      height: 40px;
+      font-size: 20px;
+      text-align: right;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #f3f3f3;
+      padding: 5px 10px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      height: 50px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #4facfe;
+      color: white;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #00c6ff;
+    }
+
+    .equal {
+      grid-column: span 2;
+      background: #00b894;
+    }
+
+    .equal:hover {
+      background: #00997a;
+    }
+  </style>
+</head>
+
+<body onload="brython()">
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <button>(</button>
+      <button>)</button>
+      <button>C</button>
+      <button>/</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button>*</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>-</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>+</button>
+      <button>0</button>
+      <button>.</button>
+      <button class="equal">=</button>
+    </div>
+  </div>
+
+  <script type="text/python">
+from browser import document
+
+display = document["display"]
+
+# простые функции (чисто для примера, но не обязательны)
+def add(a, b): return a + b
+def sub(a, b): return a - b
+def mul(a, b): return a * b
+def div(a, b): return a / b
+
+def on_click(event):
+    text = event.target.text
+    if text == "C":
+        display.value = ""
+    elif text == "=":
+        try:
+            # Вычисляем введённое выражение
+            display.value = str(eval(display.value))
+        except:
+            display.value = "Ошибка"
+    else:
+        display.value += text
+
+# Привязываем обработчик ко всем кнопкам
+for btn in document.select("button"):
+    btn.bind("click", on_click)
+  </script>
+</body>
+</html>
