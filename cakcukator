@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Калькулятор на Python (Brython)</title>
-
-  <!-- Подключаем Brython -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.11.1/brython.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор</title>
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
+      font-family: Arial, sans-serif;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       background: linear-gradient(135deg, #4facfe, #00f2fe);
     }
 
     .calculator {
-      background: white;
+      background: #fff;
       padding: 20px;
       border-radius: 20px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
@@ -32,12 +27,12 @@
       width: 260px;
       height: 40px;
       font-size: 20px;
-      text-align: right;
       margin-bottom: 10px;
+      text-align: right;
+      padding: 5px 10px;
       border: none;
       border-radius: 10px;
       background: #f3f3f3;
-      padding: 5px 10px;
     }
 
     .buttons {
@@ -53,7 +48,7 @@
       border-radius: 10px;
       cursor: pointer;
       background: #4facfe;
-      color: white;
+      color: #fff;
       transition: 0.2s;
     }
 
@@ -71,10 +66,9 @@
     }
   </style>
 </head>
-
-<body onload="brython()">
+<body>
   <div class="calculator">
-    <input type="text" id="display" readonly />
+    <input type="text" id="display" readonly>
     <div class="buttons">
       <button>(</button>
       <button>)</button>
@@ -98,33 +92,27 @@
     </div>
   </div>
 
-  <script type="text/python">
-from browser import document
+  <script>
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('button');
 
-display = document["display"]
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const value = btn.textContent;
 
-# простые функции (чисто для примера, но не обязательны)
-def add(a, b): return a + b
-def sub(a, b): return a - b
-def mul(a, b): return a * b
-def div(a, b): return a / b
-
-def on_click(event):
-    text = event.target.text
-    if text == "C":
-        display.value = ""
-    elif text == "=":
-        try:
-            # Вычисляем введённое выражение
-            display.value = str(eval(display.value))
-        except:
-            display.value = "Ошибка"
-    else:
-        display.value += text
-
-# Привязываем обработчик ко всем кнопкам
-for btn in document.select("button"):
-    btn.bind("click", on_click)
+        if (value === 'C') {
+          display.value = '';
+        } else if (value === '=') {
+          try {
+            display.value = eval(display.value);
+          } catch {
+            display.value = 'Ошибка';
+          }
+        } else {
+          display.value += value;
+        }
+      });
+    });
   </script>
 </body>
 </html>
